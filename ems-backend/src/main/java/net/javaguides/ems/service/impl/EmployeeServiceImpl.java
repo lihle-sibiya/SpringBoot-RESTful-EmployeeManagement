@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private EmployeeRepository employeeRepository;
+    private EmployeeRepository employeeRepository;//declares dependency on the EmployeeRepository interface
 
     @Override
     public EmployeeDto createEmployee(EmployeeDto employeeDto) {
@@ -29,8 +29,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDto getEmployeeById(Long employeeId) {
         Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> //Lambda
-                        new ResourceNotFoundException("Employee is not exists with given id : " + employeeId));
+                .orElseThrow(() -> //Lambda ...throws an exception if no employee found
+                        new ResourceNotFoundException("Employee does not exist with given id : " + employeeId));
 
         return EmployeeMapper.mapToEmployeeDto(employee);
     }
@@ -39,14 +39,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<EmployeeDto> getAllEmployees() {
         List<Employee> employees = employeeRepository.findAll();
         return employees.stream().map((employee) -> EmployeeMapper.mapToEmployeeDto(employee))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()); //collects the found employees to a list
     }
 
     @Override
     public EmployeeDto updateEmployee(Long employeeId, EmployeeDto updatedEmployee) {
 
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(
-                () -> new ResourceNotFoundException("Employee is not exists with given id: " + employeeId)
+                () -> new ResourceNotFoundException("Employee does not exist with given id: " + employeeId)
         );
 
         employee.setFirstName(updatedEmployee.getFirstName());
@@ -62,7 +62,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void deleteEmployee(Long employeeId) {
 
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(
-                () -> new ResourceNotFoundException("Employee is not exists with given id: " + employeeId)
+                () -> new ResourceNotFoundException("Employee does not exist with given id: " + employeeId)
         );
 
         employeeRepository.deleteById(employeeId);
