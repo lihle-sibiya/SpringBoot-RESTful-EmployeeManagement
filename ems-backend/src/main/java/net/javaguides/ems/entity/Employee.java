@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Entity //specify class as a JPA entity
 @Table(name = "employees")
 public class Employee {
 
@@ -24,6 +24,6 @@ public class Employee {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "email_id", nullable = false, unique = true)
+    @Column(name = "email_id", nullable = false, unique = true) //nullable = not null
     private String email;
 }
